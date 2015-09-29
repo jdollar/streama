@@ -19,18 +19,24 @@ streamaApp.controller('modalTvShowCtrl', [
 		delete $item.id;
 		$scope.tvShow = $item;
 		$scope.tvShow.apiId = apiId;
+        $scope.addManually = false;
 	};
 
 
 	$scope.search = function (query) {
 		return apiService.theMovieDb.search('tv', query).then(function (data) {
-            if (data.data.length == 0) {
-                $scope.addManually = true;
-            }
 			return data.data;
 		});
 	};
 
+    $scope.manualAdd = function(tvShow) {
+        $scope.tvShow = {'name': tvShow.name, 'visibleDetails': true};
+        $scope.addManually = true; //disables api_id input
+    }
+
+    $scope.visibleDetails = function(tvShow) {
+        return tvShow ? (tvShow.visibleDetails || tvShow.overview) : false
+    }
 
 	setTimeout(function () {
 		$('.name-input').focus();

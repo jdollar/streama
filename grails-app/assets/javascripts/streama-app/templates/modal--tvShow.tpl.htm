@@ -4,23 +4,19 @@
     <legend>New Show</legend>
 
     <div class="form-group">
-      <div class="col-sm-12 typeahead-wrapper">
-        <div class="input-group">
-          <input type="text" class="form-control name-input" ng-model="tvShow.name" placeholder="Show Name" typeahead-loading="loading" typeahead-append-to-body="true"
-                   typeahead="show.name for show in search($viewValue)" typeahead-on-select="selectFromAPI($item)" typeahead-template-url="typeahead--tvShow.htm">
-          <span class="input-group-btn">
-            <button type="button" class="btn btn-default">Manual Add</button>
-          </span>
-        </div>
+      <div class="col-sm-10 typeahead-wrapper">
+        <input type="text" class="form-control name-input" ng-model="tvShow.name" placeholder="Show Name" typeahead-loading="loading" typeahead-append-to-body="true"
+                 typeahead="show.name for show in search($viewValue)" typeahead-on-select="selectFromAPI($item)" typeahead-template-url="typeahead--tvShow.htm">
         <div class="spinner" ng-show="loading">
           <div class="bounce1"></div>
           <div class="bounce2"></div>
           <div class="bounce3"></div>
         </div>
       </div>
+      <button type="button" class="btn btn-default" ng-click="manualAdd(tvShow)">Manual Add</button>
     </div>
     
-    <div ng-show="tvShow.overview">
+    <div ng-show="visibleDetails(tvShow)">
       <div class="form-group row-slim">
         <div class="col-sm-2">
           <label>Release Date</label>
@@ -61,7 +57,7 @@
     </div>
   </div>
 
-  <div class="modal-footer" ng-show="tvShow.overview">
+  <div class="modal-footer" ng-show="visibleDetails(tvShow)">
     <button class="btn btn-success" ng-click="saveShow(tvShow)">Save Show</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
   </div>

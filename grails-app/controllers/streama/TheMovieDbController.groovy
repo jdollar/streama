@@ -20,21 +20,22 @@ class TheMovieDbController {
 
   def seasonForShow() {
     String apiId = params.apiId
-    String season = params.season
-    TvShow tvShow = TvShow.get(params.getInt('showId'))
-
-    def JsonContent = new URL(theMovieDbService.BASE_URL + '/tv/' + apiId + '/season/' + season + '?api_key=' + theMovieDbService.API_KEY).text
-    def json = new JsonSlurper().parseText(JsonContent)
-
-    def episodes = json?.episodes
     def result = []
+    if (apiId != null) {
+      String season = params.season
+      TvShow tvShow = TvShow.get(params.getInt('showId'))
 
-    episodes?.each{ episodeData ->
-      Episode episode = new Episode(episodeData)
-      episode.show = tvShow
-      episode.save failOnError: true
+      def JsonContent = new URL(theMovieDbService.BASE_URL + '/tv/' + apiId + '/season/' + season + '?api_key=' + theMovieDbService.API_KEY).text
+      def json = new JsonSlurper().parseText(JsonContent)
+      def episodes = json?.episodes
 
-      result.add(episode)
+      episodes?.each{ episodeData ->
+        Episode episode = new Episode(episodeData)
+        episode.show = tvShow
+        episode.save failOnError: true
+
+        result.add(episode)
+      }
     }
 
     respond result
