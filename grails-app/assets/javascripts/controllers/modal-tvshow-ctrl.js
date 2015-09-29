@@ -24,6 +24,9 @@ streamaApp.controller('modalTvShowCtrl', [
 
 	$scope.search = function (query) {
 		return apiService.theMovieDb.search('tv', query).then(function (data) {
+            if (data.data.length == 0) {
+                $scope.addManually = true;
+            }
 			return data.data;
 		});
 	};
